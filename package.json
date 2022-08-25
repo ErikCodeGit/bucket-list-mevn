@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "engines" : { 
+    "npm" : ">=8.15.0",
+    "node" : ">=18.7.0"
+  },
   "scripts": {
     "server": "nodemon server.js --ignore 'client/'",
     "client": "npm run serve --prefix client",
@@ -23,5 +27,6 @@
   "devDependencies": {
     "concurrently": "^7.3.0",
     "nodemon": "^2.0.19"
-  }
+  },
+  
 }
