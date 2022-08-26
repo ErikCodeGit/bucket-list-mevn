@@ -1,35 +1,28 @@
 <template>
   <div id="app">
     <h1 class="subtitle has-text-centered">Bucket List:</h1>
-    <hr />
+    <hr>
     <div class="field has-addons">
       <div class="control is-expanded">
         <input class="input" v-model="description" type="text" placeholder="Go to mars..." />
       </div>
       <div class="control">
-        <a class="button is-info" @click="addItem" :disabled="!description">Add</a>
+        <a class="button is-info" @click="addItem">Add</a>
       </div>
     </div>
     <div class="notification" v-for="(item, i) in items" :key="item._id">
       <div class="columns">
-        <input class="column input" v-if="isSelected(item)" v-model="editedDescription" />
+        <input class="column input" type="text" v-if="isSeleсted(item)" v-model="editedDescription">
         <p v-else class="column">
-          <span class="tag is-primary">{{ i + 1}}</span>
+          <span class="tag is-primary">{{ i + 1 }}</span>
           {{ item.description }}
         </p>
-        <div class="column is-narrow">
-          <span
-            class="icon has-text-primary"
-            @click="isSelected(item) ?  unselect() : select(item)"
-          >
-            <i class="material-icons">{{isSelected(item) ? 'close': 'edit'}}</i>
+        <div clas="column is-narrow">
+          <span class="icon has-text-primary" @click="isSeleсted(item) ? unselect() : select(item)">
+            <i class="material-icons">{{ isSeleсted(item) ? 'close' : 'edit' }}</i>
           </span>
-
-          <span
-            class="icon has-text-info"
-            @click="isSelected(item) ? updateItem(item, i) : removeItem(item, i)"
-          >
-            <i class="material-icons">{{isSelected(item) ? 'save': 'delete'}}</i>
+          <span class="icon has-text-info" @click="isSeleсted(item) ? updateItem(item, i) : removeItem(item, i)">
+            <i class="material-icons">{{ isSeleсted(item) ? 'save' : 'delete' }}</i>
           </span>
         </div>
       </div>
@@ -40,7 +33,7 @@
 <script>
 import axios from "axios";
 export default {
-  name: "App",
+  name: 'App',
   data() {
     return {
       items: [],
@@ -50,27 +43,32 @@ export default {
     };
   },
   async mounted() {
-    const response = await axios.get("api/bucketListItems/");
+    const response = await axios.get('api/bucketListItems/');
     this.items = response.data;
   },
   methods: {
     async addItem() {
-      const response = await axios.post("api/bucketListItems/", {
-        description: this.description
-      });
-      this.items.push(response.data);
-      this.description = "";
+      this.description = this.description.trim()
+      if (this.description != "") {
+        const response = await axios.post('api/bucketListItems/', {
+          description: this.description
+        });
+        this.items.push(response.data);
+        this.description = "";
+      } else {
+        window.alert('Enter something to add!')
+      }
     },
     async removeItem(item, i) {
-      await axios.delete("api/bucketListItems/" + item._id);
+      await axios.delete('api/bucketListItems/' + item._id);
       this.items.splice(i, 1);
     },
     select(item) {
       this.selected = item;
       this.editedDescription = item.description;
     },
-    isSelected(item) {
-      return item._id === this.selected._id;
+    isSeleсted(item) {
+      return item._id == this.selected._id;
     },
     unselect() {
       this.selected = {};
@@ -83,8 +81,8 @@ export default {
       this.items[i] = response.data;
       this.unselect();
     }
-  }
-};
+  },
+}
 </script>
 
 <style>
@@ -93,7 +91,8 @@ export default {
   margin-top: 3rem;
   max-width: 700px;
 }
+
 .icon {
-  cursor: pointer;
+  cursor: pointer
 }
 </style>
