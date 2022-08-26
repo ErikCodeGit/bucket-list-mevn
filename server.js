@@ -15,9 +15,7 @@ app.use(bodyParser.json())
 mongoose
     .connect(mongoUri, {
         useNewUrlParser: true,
-        useCreateIndex: true,
         useUnifiedTopology: true,
-        useFindAndModify: false,
     })
     .then(() => console.log('MongoDB database Connected...'))
     .catch((err) => console.log(err))
